@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Excel工具类
+ *
  * @author jimu
  */
 public class ExcelUtil {
@@ -24,4 +25,24 @@ public class ExcelUtil {
         EasyExcel.read(filePath, tClass, new PageReadListener<T>(list::addAll)).sheet().doRead();
         return list;
     }
+
+    /**
+     * 写入Excel
+     *
+     * @param filePath 文件地址
+     * @param tClass   写入实体类型
+     * @param head     表头
+     * @param data     数据
+     * @param <T>      T
+     */
+    public static <T> void write(String filePath, Class<T> tClass, List<String> head, List<T> data) {
+        List<List<String>> headAdapt = new ArrayList<>();
+        for (String h : head) {
+            List<String> innerList = new ArrayList<>();
+            innerList.add(h);
+            headAdapt.add(innerList);
+        }
+        EasyExcel.write(filePath, tClass).head(headAdapt).sheet().doWrite(data);
+    }
+
 }
